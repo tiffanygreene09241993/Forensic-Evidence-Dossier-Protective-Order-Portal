@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color-scheme: dark;
+  }
+}
+
+.font-serif-court {
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+
+.font-mono-legal {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Legal Pleading Paper Styling */
+.pleading-paper-sheet {
+  position: relative;
+  background-color: #0b1120;
+  border-left: 2px solid #334155;
+  border-right: 1px solid #1e293b;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .pleading-paper-sheet {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-left: 2px solid #000000 !important;
+    border-right: 1px solid #000000 !important;
+    box-shadow: none !important;
+  }
+  .print-text-black {
+    color: #000000 !important;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+}
+

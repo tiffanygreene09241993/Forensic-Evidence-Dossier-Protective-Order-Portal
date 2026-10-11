@@ -1,0 +1,6 @@
+{
+  "name": "Forensic Evidence Dossier & Protective Order Portal",
+  "description": "Court-ready forensic intake, evidence audit, verified declaration, and protective restraining order dossier for Tiffany Greene v. Eric Greene.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
