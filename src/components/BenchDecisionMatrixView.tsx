@@ -775,7 +775,7 @@ DATED this 5th day of October, 2026.`,
 - Respondent: Zero specialized care coordination.
 
 4. FACTOR (c) - CAPACITY TO ACT ON CHILDREN'S NEEDS:
-- Petitioner: Liberty University 4.0 GPA Criminal Justice student.
+- Petitioner: Liberty University 4.0 GPA Criminal Justice Scholar · Dual National Honor Society Inductee (Omega Nu Lambda & Order of the Sword and Shield).
 - Respondent: Secretly pocketed $161,280.40 cash from homestead liquidation (TRG-0023); paid $0.00 child support in 7 years (TRG-0016).`,
                     'bench-card-summary'
                   )

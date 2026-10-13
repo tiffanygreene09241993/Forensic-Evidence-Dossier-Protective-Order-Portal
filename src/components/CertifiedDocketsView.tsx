@@ -96,7 +96,7 @@ export const CertifiedDocketsView: React.FC<CertifiedDocketsViewProps> = ({
       caseNumber: 'Submission ID: 05279c5fe54949208d87da7f14601dba (Prior ID: 2263edba53654980b2e361c2316ca966)',
       title: 'FBI IC3 Federal Criminal, Extortion & Cyber-Harassment Dossier',
       date: 'September 16, 2026 · Prior Filing: December 18, 2025',
-      complainant: 'Tiffany Greene (Liberty University 4.0 GPA Criminal Justice Student)',
+      complainant: 'Tiffany Greene (Liberty University 4.0 GPA Criminal Justice Scholar · Dual National Honor Society Inductee)',
       subjects: 'Eric Joshua Greene & Heaven Leigh Dawn Horton (16968 KY Route 122, McDowell, KY)',
       federalCharges: '18 U.S.C. §§ 1028, 1028A (Identity Theft), 1029, 1030 (Computer Fraud), 1343 (Wire Fraud), 2261A (Cyberstalking)',
       crossAgencies:
