@@ -19,6 +19,9 @@ import {
   GraduationCap,
   History,
   Lock,
+  Printer,
+  Download,
+  ExternalLink,
 } from 'lucide-react';
 
 interface ParentalFitnessViewProps {
@@ -32,7 +35,15 @@ export const ParentalFitnessView: React.FC<ParentalFitnessViewProps> = ({
   onSelectExhibit,
 }) => {
   const [copiedMemo, setCopiedMemo] = useState(false);
-  const [activeTab, setActiveTab] = useState<'pillars' | 'dcf-timeline' | 'victim-records-legal'>('pillars');
+  const [copiedExhibitText, setCopiedExhibitText] = useState(false);
+  const [activeTab, setActiveTab] = useState<'pillars' | 'dcf-timeline' | 'victim-records-legal' | 'court-exhibit-a'>('pillars');
+
+  const handlePrintExhibitA = () => {
+    setActiveTab('court-exhibit-a');
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  };
 
   const handleCopyLegalMemo = () => {
     const text = `MEMORANDUM OF LAW REGARDING IMPROPER WEAPONIZATION OF HISTORICAL CHILDHOOD VICTIMIZATION RECORDS UNDER FLORIDA STATUTES CHAPTER 39
@@ -146,40 +157,64 @@ The necessity of exhuming childhood trauma and elementary school records from 20
           </p>
         </div>
 
-        {/* View Tabs */}
-        <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs self-start md:self-auto">
+        {/* Actions & View Tabs */}
+        <div className="no-print flex flex-wrap items-center gap-2 self-start md:self-auto">
+          {/* View Tabs */}
+          <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+            <button
+              onClick={() => setActiveTab('pillars')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
+                activeTab === 'pillars'
+                  ? 'bg-amber-400 text-slate-950 font-bold shadow'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5" />
+              <span>5 Fitness Pillars</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('dcf-timeline')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
+                activeTab === 'dcf-timeline'
+                  ? 'bg-amber-400 text-slate-950 font-bold shadow'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <History className="w-3.5 h-3.5" />
+              <span>Comparative DCF Audit</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('victim-records-legal')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
+                activeTab === 'victim-records-legal'
+                  ? 'bg-amber-400 text-slate-950 font-bold shadow'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Childhood Records Memo</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('court-exhibit-a')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
+                activeTab === 'court-exhibit-a'
+                  ? 'bg-amber-400 text-slate-950 font-bold shadow'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Exhibit A (Court PDF)</span>
+            </button>
+          </div>
+
+          {/* Quick Print Exhibit A Button */}
           <button
-            onClick={() => setActiveTab('pillars')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
-              activeTab === 'pillars'
-                ? 'bg-amber-400 text-slate-950 font-bold shadow'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+            onClick={handlePrintExhibitA}
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-lg transition-colors shadow shrink-0"
+            title="Print official Court Exhibit A (Academic & Honor Society Verification)"
           >
-            <UserCheck className="w-3.5 h-3.5" />
-            <span>5 Fitness Pillars</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('dcf-timeline')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
-              activeTab === 'dcf-timeline'
-                ? 'bg-amber-400 text-slate-950 font-bold shadow'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <History className="w-3.5 h-3.5" />
-            <span>Comparative DCF Audit</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('victim-records-legal')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
-              activeTab === 'victim-records-legal'
-                ? 'bg-amber-400 text-slate-950 font-bold shadow'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Lock className="w-3.5 h-3.5" />
-            <span>Childhood Records Memo</span>
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print Exhibit A</span>
           </button>
         </div>
       </div>
@@ -526,6 +561,342 @@ The necessity of exhuming childhood trauma and elementary school records from 20
               <br />
               The fact that opposing parties were forced to exhume confidential childhood records from two decades ago proves beyond question that they possess <strong>ZERO legitimate evidence of adult parental inadequacy</strong>. Petitioner respectfully requests that this Court strike all references to historical childhood victim records and evaluate this custody matter exclusively upon the parties&apos; documented adult conduct.
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 4: COURT EXHIBIT A (FORMAL PRINTABLE PDF DOSSIER)         */}
+      {/* ============================================================== */}
+      {activeTab === 'court-exhibit-a' && (
+        <div className="space-y-6">
+          {/* Action Bar (Hidden in Print) */}
+          <div className="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-amber-950/30 border border-amber-500/40 rounded-xl text-xs">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2 font-mono-legal text-amber-400 font-bold uppercase text-[11px]">
+                <Scale className="w-3.5 h-3.5" />
+                <span>Court-Ready Exhibit Layout · Florida Sixth Judicial Circuit</span>
+              </div>
+              <p className="text-slate-300">
+                Formatted for filing or direct bench submission under Florida Statutes § 61.13 and Florida Evidence Code § 90.902. Use your browser&apos;s Print / Save as PDF dialog.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => {
+                  const exhibitText = `IN THE CIRCUIT COURT OF THE SIXTH JUDICIAL CIRCUIT
+IN AND FOR PASCO COUNTY, FLORIDA
+FAMILY LAW / DOMESTIC RELATIONS DIVISION
+CASE NO.: 2020-DP-000113
+
+TIFFANY RENEA GREENE,
+    Petitioner / Mother,
+v.
+ERIC JOSHUA GREENE,
+    Respondent / Father.
+________________________________________/
+
+PETITIONER'S EXHIBIT A: CERTIFIED ACADEMIC TRANSCRIPT & DUAL NATIONAL HONOR SOCIETY VERIFICATION DOSSIER
+(SUBMITTED PURSUANT TO FLA. STAT. § 61.13(3)(c) & (f) AND FLA. STAT. § 90.902)
+
+OFFICIAL DOCUMENT MANIFEST:
+• Item 1 (IR-030): Liberty University Certified Academic Transcript (B.S. Criminal Justice, 88 Credits, 4.00 Cumulative GPA, Dean's List)
+• Item 2 (IR-030A): Omega Nu Lambda National Honor Society Official Certificate of Induction (Liberty University Alpha Chapter · July 17, 2026)
+• Item 3 (IR-030B): Omicron Sigma Sigma (Order of the Sword & Shield) National Honor Society Official Certificate of Membership (May 5, 2026)`;
+                  navigator.clipboard.writeText(exhibitText);
+                  setCopiedExhibitText(true);
+                  setTimeout(() => setCopiedExhibitText(false), 2000);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-lg text-xs transition-colors"
+              >
+                {copiedExhibitText ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedExhibitText ? 'Copied' : 'Copy Exhibit Caption'}</span>
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="flex items-center gap-1.5 px-4 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-lg text-xs transition-colors shadow"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Print / Save as PDF</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Formal Court Exhibit Document */}
+          <div className="court-exhibit-sheet p-8 sm:p-12 bg-white text-black font-serif-court rounded-xl border border-slate-300 shadow-2xl space-y-6">
+            {/* Header Stamp */}
+            <div className="flex items-center justify-between border-b-2 border-black pb-3 text-xs font-mono-legal">
+              <span className="font-bold tracking-wider">FILED: PASCO COUNTY, FLORIDA</span>
+              <span className="bg-black text-white px-2 py-0.5 font-bold uppercase tracking-wider">
+                PETITIONER&apos;S EXHIBIT A
+              </span>
+              <span>BATES: TRG-IR-030 – TRG-IR-030B</span>
+            </div>
+
+            {/* Circuit Court Formal Caption */}
+            <div className="text-center space-y-1 pt-2">
+              <div className="text-xs uppercase tracking-widest font-bold">
+                IN THE CIRCUIT COURT OF THE SIXTH JUDICIAL CIRCUIT
+              </div>
+              <div className="text-xs uppercase tracking-wider">
+                IN AND FOR PASCO COUNTY, FLORIDA · FAMILY LAW DIVISION
+              </div>
+              <div className="text-xs font-mono-legal mt-1">
+                CASE NO.: <strong>2020-DP-000113</strong> · SECTION: Family Division
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 border-t border-b border-black py-3 text-xs">
+              <div>
+                <div className="font-bold">TIFFANY RENEA GREENE,</div>
+                <div className="italic ml-4">Petitioner / Mother,</div>
+                <div className="my-1 font-bold">v.</div>
+                <div className="font-bold">ERIC JOSHUA GREENE,</div>
+                <div className="italic ml-4">Respondent / Father.</div>
+              </div>
+              <div className="text-right text-[11px] font-mono-legal flex flex-col justify-center space-y-0.5">
+                <div className="font-bold uppercase">PETITIONER&apos;S COMPREHENSIVE EXHIBIT A</div>
+                <div>ACADEMIC TRANSCRIPT &amp; HONOR SOCIETY DOSSIER</div>
+                <div>STATUTORY BASIS: FLA. STAT. § 61.13(3)(c) &amp; (f)</div>
+                <div>AUTHENTICATION: FRE 902 / FLA. STAT. § 90.902</div>
+              </div>
+            </div>
+
+            {/* Document Title */}
+            <div className="text-center pt-2 pb-1">
+              <h2 className="text-sm sm:text-base font-bold uppercase tracking-wide">
+                PETITIONER&apos;S EXHIBIT A: CERTIFIED ACADEMIC TRANSCRIPT &amp; DUAL NATIONAL HONOR SOCIETY INDUCTION DOSSIER
+              </h2>
+              <p className="text-xs italic text-slate-700 mt-1 font-sans">
+                Offered in affirmative proof of maternal stability, intellectual dedication, moral character, and educational leadership.
+              </p>
+            </div>
+
+            {/* Exhibit Manifest Summary */}
+            <div className="p-3 bg-slate-50 border border-slate-300 rounded text-xs space-y-1 font-sans">
+              <div className="font-bold font-mono-legal text-[11px] uppercase tracking-wider text-black">
+                Certified Evidentiary Manifest:
+              </div>
+              <ul className="list-disc pl-5 space-y-0.5 text-[11px]">
+                <li>
+                  <strong>Exhibit A-1 (IR-030):</strong> Liberty University Official Academic Transcript (88.00 Earned Credits, 4.00 Cumulative GPA, Consecutive Dean&apos;s List Honors).
+                </li>
+                <li>
+                  <strong>Exhibit A-2 (IR-030A):</strong> Omega Nu Lambda National Honor Society Certificate of Induction (Liberty University, Alpha Chapter · Effective July 17, 2026).
+                </li>
+                <li>
+                  <strong>Exhibit A-3 (IR-030B):</strong> Omicron Sigma Sigma (Order of the Sword &amp; Shield) National Academic &amp; Professional Honor Society Certificate (May 5, 2026 · Motto: <em>&quot;Ex Scientia Pax&quot;</em>).
+                </li>
+              </ul>
+            </div>
+
+            {/* SECTION 1: LIBERTY UNIVERSITY TRANSCRIPT VERIFICATION */}
+            <div className="space-y-3 pt-2">
+              <h3 className="text-xs font-bold font-mono-legal uppercase border-b border-black pb-1 flex items-center justify-between">
+                <span>SECTION 1: LIBERTY UNIVERSITY OFFICIAL ACADEMIC TRANSCRIPT (IR-030)</span>
+                <span className="text-[10px] bg-slate-200 px-1.5 py-0.2 rounded font-sans">F.R.E. 902 Verified</span>
+              </h3>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-sans">
+                <div className="p-2 border border-slate-300 bg-slate-50">
+                  <span className="text-[10px] text-slate-600 block">Student:</span>
+                  <strong>Mrs. Tiffany Renea Greene</strong>
+                  <span className="text-[10px] text-slate-500 block">DOB: Sep 24, 1993</span>
+                </div>
+                <div className="p-2 border border-slate-300 bg-slate-50">
+                  <span className="text-[10px] text-slate-600 block">Degree &amp; Program:</span>
+                  <strong>Bachelor of Science</strong>
+                  <span className="text-[10px] text-slate-700 block">Major: Criminal Justice</span>
+                </div>
+                <div className="p-2 border border-slate-300 bg-slate-50">
+                  <span className="text-[10px] text-slate-600 block">Total Earned Credits:</span>
+                  <strong className="text-black">88.00 Semester Hours</strong>
+                  <span className="text-[10px] text-slate-600 block">(60 Transfer + 28 LU)</span>
+                </div>
+                <div className="p-2 border border-slate-300 bg-slate-50">
+                  <span className="text-[10px] text-slate-600 block">Cumulative GPA:</span>
+                  <strong className="text-black">4.00 / 4.00</strong>
+                  <span className="text-[10px] text-slate-700 block">Standing: Dean&apos;s List</span>
+                </div>
+              </div>
+
+              {/* Course Detail Breakdown Table */}
+              <div className="border border-slate-300 overflow-hidden text-[11px] font-sans">
+                <table className="w-full text-left divide-y divide-slate-300">
+                  <thead className="bg-slate-100 font-bold uppercase text-[10px]">
+                    <tr>
+                      <th className="p-2 w-20">Term</th>
+                      <th className="p-2 w-24">Course ID</th>
+                      <th className="p-2">Course Title</th>
+                      <th className="p-2 w-16 text-center">Credits</th>
+                      <th className="p-2 w-16 text-center">Grade</th>
+                      <th className="p-2 w-24 text-center">Standing</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    <tr>
+                      <td className="p-2 font-mono-legal text-[10px] align-top" rowSpan={5}>Spring 2026</td>
+                      <td className="p-1.5 font-mono-legal font-bold">BIBL 104</td>
+                      <td className="p-1.5">Survey of Old &amp; New Testament</td>
+                      <td className="p-1.5 text-center">4.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                      <td className="p-1.5 text-center text-[10px] font-semibold text-slate-700" rowSpan={5}>
+                        Dean&apos;s List · 4.00
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">CJUS 200</td>
+                      <td className="p-1.5">Introduction to Criminal Justice</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">GOVT 200</td>
+                      <td className="p-1.5">Constitutional Government &amp; Free Enterprise</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">GOVT 220</td>
+                      <td className="p-1.5">American Government</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">WRSP 101</td>
+                      <td className="p-1.5">Introduction to Worship Studies</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+
+                    <tr className="border-t-2 border-slate-300">
+                      <td className="p-2 font-mono-legal text-[10px] align-top" rowSpan={4}>Summer 2026</td>
+                      <td className="p-1.5 font-mono-legal font-bold">CJUS 230</td>
+                      <td className="p-1.5">Criminal Justice Writing &amp; Research</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                      <td className="p-1.5 text-center text-[10px] font-semibold text-slate-700" rowSpan={4}>
+                        Dean&apos;s List · 4.00
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">HIUS 221</td>
+                      <td className="p-1.5">Survey of American History I</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">PADM 360</td>
+                      <td className="p-1.5">Introduction to Public Administration</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                    <tr>
+                      <td className="p-1.5 font-mono-legal font-bold">PADM 462</td>
+                      <td className="p-1.5">Public Finance &amp; Budgeting</td>
+                      <td className="p-1.5 text-center">3.00</td>
+                      <td className="p-1.5 text-center font-bold">A</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="text-[10px] text-slate-600 font-sans">
+                <strong>In-Progress Upper-Division Curriculum:</strong> Constitutional Criminal Procedure (CJUS 410), Criminal Justice Report Writing (CJUS 231), Judicial Process (CJUS 330), Juvenile Justice (CJUS 310), Criminal Law (CJUS 400), Advanced Public Administration (PADM 475), and Crisis Intervention (PSYC 317).
+              </div>
+            </div>
+
+            {/* SECTION 2 & 3: DUAL NATIONAL HONOR SOCIETIES */}
+            <div className="space-y-3 pt-2 page-break">
+              <h3 className="text-xs font-bold font-mono-legal uppercase border-b border-black pb-1">
+                SECTION 2 &amp; 3: DUAL NATIONAL HONOR SOCIETY INDUCTIONS (IR-030A &amp; IR-030B)
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
+                {/* Omega Nu Lambda */}
+                <div className="p-4 border-2 border-black rounded bg-slate-50 space-y-2">
+                  <div className="flex items-center justify-between border-b border-black pb-1.5">
+                    <span className="font-bold text-xs uppercase tracking-wider">OMEGA NU LAMBDA</span>
+                    <span className="text-[10px] font-mono-legal font-bold">EXHIBIT A-2 · IR-030A</span>
+                  </div>
+                  <div className="font-serif-court text-xs italic text-center py-1">
+                    National Honor Society for Online Students
+                  </div>
+                  <div className="text-[11px] leading-relaxed">
+                    Certifies that <strong>Tiffany Renea Greene</strong> is an inducted member of Omega Nu Lambda National Honor Society as confirmed by <strong>Liberty University, Alpha Chapter</strong>, granted all honors, benefits, and privileges effective:
+                  </div>
+                  <div className="text-center font-mono-legal font-bold text-xs pt-1 border-t border-slate-300">
+                    17th Day of July, 2026
+                  </div>
+                  <div className="text-[9px] text-slate-600 text-center">
+                    Signed by Advisory Chair &amp; Founder · Attested under Seal
+                  </div>
+                </div>
+
+                {/* Order of the Sword & Shield */}
+                <div className="p-4 border-2 border-black rounded bg-slate-50 space-y-2">
+                  <div className="flex items-center justify-between border-b border-black pb-1.5">
+                    <span className="font-bold text-xs uppercase tracking-wider">OMICRON SIGMA SIGMA</span>
+                    <span className="text-[10px] font-mono-legal font-bold">EXHIBIT A-3 · IR-030B</span>
+                  </div>
+                  <div className="font-serif-court text-xs italic text-center py-1">
+                    Order of the Sword &amp; Shield Academic &amp; Professional Honor Society
+                  </div>
+                  <div className="text-[11px] leading-relaxed">
+                    Certifies that <strong>Tiffany Renea Greene</strong> has complied with all requirements for membership in the premier honor society for Criminal Justice &amp; Homeland Security.
+                  </div>
+                  <div className="text-center font-serif-court font-bold text-xs pt-1 border-t border-slate-300">
+                    National Motto: &quot;Ex Scientia Pax&quot; · May 5, 2026
+                  </div>
+                  <div className="text-[9px] text-slate-600 text-center">
+                    Executive National Directorate · Official National Seal Attached
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 4: STATUTORY BEST INTERESTS PROFFER */}
+            <div className="space-y-2 pt-2 text-xs font-serif-court leading-relaxed border-t border-black">
+              <h3 className="font-bold font-sans uppercase text-xs tracking-wider">
+                SECTION 4: STATUTORY RELEVANCE UNDER FLORIDA STATUTES § 61.13
+              </h3>
+              <p>
+                <strong>1. Moral Fitness of the Parties (§ 61.13(3)(f)):</strong> Petitioner&apos;s unblemished academic excellence at Liberty University (4.00 Cumulative GPA across 88 semester credits) and dual induction into national honor societies conclusively establishes extraordinary personal discipline, integrity, and ethical leadership.
+              </p>
+              <p>
+                <strong>2. Capacity to Provide for the Child&apos;s Needs (§ 61.13(3)(c)):</strong> While Respondent Eric Greene paid $0.00 in child support in seven years and secretly liquidated $161,280.40 in homestead cash, Petitioner has actively advanced her higher education in Criminal Justice and Public Administration to establish permanent, independent career stability for her minor children.
+              </p>
+              <p>
+                <strong>3. Complete Evidentiary Rebuttal:</strong> These certified institutional records from nationally accredited universities and honor societies demolish the opposing party&apos;s baseless defamatory assertions on social media.
+              </p>
+            </div>
+
+            {/* SECTION 5: NOTARIAL ATTESTATION */}
+            <div className="border-t-2 border-black pt-3 text-[11px] font-sans space-y-2 avoid-break">
+              <div className="font-bold uppercase text-[10px] font-mono-legal">
+                CERTIFICATE OF SERVICE &amp; VERIFICATION UNDER FLA. STAT. § 92.525:
+              </div>
+              <p className="italic text-slate-800 leading-normal">
+                &quot;Under penalties of perjury, I declare that I have read the foregoing Petitioner&apos;s Exhibit A and the factual statements and exhibits attached hereto are true, correct, and certified official records.&quot;
+              </p>
+              <div className="grid grid-cols-2 gap-8 pt-4">
+                <div className="border-t border-black pt-1">
+                  <div className="font-bold">Tiffany Renea Greene</div>
+                  <div className="text-[10px] text-slate-600">Petitioner / Mother Appearing Pro Se</div>
+                  <div className="text-[10px] text-slate-500 font-mono-legal">Date: October 2026</div>
+                </div>
+                <div className="border-t border-black pt-1 text-right">
+                  <div className="text-[10px] text-slate-600">Sixth Judicial Circuit of Florida</div>
+                  <div className="text-[10px] text-slate-600">Family Law / Unified Family Court</div>
+                  <div className="text-[10px] font-mono-legal text-slate-500">Case No. 2020-DP-000113</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Print Watermark */}
+            <div className="print-only court-watermark">
+              AUTHENTICATED COURT EXHIBIT · TIFFANY RENEA GREENE v. ERIC JOSHUA GREENE · CASE NO.: 2020-DP-000113 · BATES: TRG-IR-030 - TRG-IR-030B
+            </div>
           </div>
         </div>
       )}

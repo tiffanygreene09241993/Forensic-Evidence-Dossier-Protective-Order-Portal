@@ -41,6 +41,7 @@ export const BenchDecisionMatrixView: React.FC<BenchDecisionMatrixViewProps> = (
   // Speech Recognition State
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const [speechError, setSpeechError] = useState<string | null>(null);
   const [activeObjections, setActiveObjections] = useState<
     { id: string; rule: string; triggerText: string; spokenText: string; counterText: string }[]
   >([]);
@@ -100,10 +101,13 @@ export const BenchDecisionMatrixView: React.FC<BenchDecisionMatrixViewProps> = (
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in this browser. You can use the simulated test buttons below to test the objection catcher.');
+      setSpeechError(
+        'Live speech recognition is not supported in this browser environment. You can use the simulated trigger buttons below to test the automated objection catcher.'
+      );
       return;
     }
 
+    setSpeechError(null);
     if (isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
@@ -893,6 +897,15 @@ DATED this 5th day of October, 2026.`,
                 <span>{isListening ? 'Stop Ambient Monitor' : 'Start Ambient Monitor'}</span>
               </button>
             </div>
+
+            {speechError && (
+              <div className="p-3 bg-amber-950/40 border border-amber-500/40 rounded-lg flex items-start gap-2 text-xs text-amber-200">
+                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <div className="flex-1 leading-relaxed">
+                  {speechError}
+                </div>
+              </div>
+            )}
 
             {/* Simulated Triggers */}
             <div className="pt-2 border-t border-slate-800/80 space-y-1.5">

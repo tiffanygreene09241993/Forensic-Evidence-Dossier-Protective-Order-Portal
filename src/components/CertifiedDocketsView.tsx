@@ -26,6 +26,7 @@ import {
   Calendar,
   Layers,
   Shield,
+  Printer,
 } from 'lucide-react';
 
 interface CertifiedDocketsViewProps {
@@ -253,7 +254,7 @@ ${docket.keyImpact}`;
         </div>
 
         {/* View Mode Switcher */}
-        <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs self-start md:self-auto">
+        <div className="no-print flex items-center gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs self-start md:self-auto">
           <button
             onClick={() => setSubView('master-ledger')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded transition-colors ${
@@ -263,7 +264,7 @@ ${docket.keyImpact}`;
             }`}
           >
             <FileSpreadsheet className="w-3.5 h-3.5" />
-            <span>Master 67-Row Incident Ledger</span>
+            <span>Master Incident Ledger ({INCIDENT_RECORDS.length})</span>
           </button>
           <button
             onClick={() => setSubView('primary-dockets')}
@@ -285,7 +286,7 @@ ${docket.keyImpact}`;
       {subView === 'master-ledger' && (
         <div className="space-y-6">
           {/* Key Strategic Forensic Insights Strip */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs">
+          <div className="no-print grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs">
             {/* Box 1: The Pedro Hernandez Witness Neutralization Arc */}
             <div className="p-3.5 bg-slate-900/90 border border-rose-900/60 rounded-xl space-y-2 relative overflow-hidden flex flex-col justify-between">
               <div className="space-y-1.5">
@@ -352,7 +353,7 @@ ${docket.keyImpact}`;
           </div>
 
           {/* Controls Bar: Search, Category, Subject & CSV Export */}
-          <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-3">
+          <div className="no-print p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-3">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               {/* Search Box */}
               <div className="relative flex-1">
@@ -361,19 +362,31 @@ ${docket.keyImpact}`;
                   type="text"
                   value={ledgerSearch}
                   onChange={(e) => setLedgerSearch(e.target.value)}
-                  placeholder="Search 67 records by date, title, agency, disposition, or description..."
+                  placeholder={`Search ${INCIDENT_RECORDS.length} legal records by date, title, agency, disposition, or description...`}
                   className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
-              {/* CSV Export Button */}
-              <button
-                onClick={handleExportLedgerCsv}
-                className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-lg transition-colors shadow shrink-0"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Export Ledger (CSV)</span>
-              </button>
+              {/* Actions Group */}
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => window.print()}
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold text-xs rounded-lg transition-colors border border-slate-700 shadow"
+                  title="Print official court-ready Exhibit B layout"
+                >
+                  <Printer className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Print Exhibit (PDF)</span>
+                </button>
+
+                {/* CSV Export Button */}
+                <button
+                  onClick={handleExportLedgerCsv}
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-lg transition-colors shadow"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Export CSV</span>
+                </button>
+              </div>
             </div>
 
             {/* Filter Pills */}
@@ -460,8 +473,40 @@ ${docket.keyImpact}`;
             </div>
           </div>
 
+          {/* Formal Court Exhibit B Header (Print Only) */}
+          <div className="print-only mb-6 border-b-2 border-black pb-4 text-black font-serif-court">
+            <div className="text-center space-y-1">
+              <div className="text-xs uppercase tracking-widest font-bold">
+                IN THE CIRCUIT COURT OF THE SIXTH JUDICIAL CIRCUIT
+              </div>
+              <div className="text-xs uppercase tracking-wider">
+                IN AND FOR PASCO COUNTY, FLORIDA · FAMILY LAW / DOMESTIC RELATIONS DIVISION
+              </div>
+              <div className="text-xs font-mono-legal mt-1 font-semibold">
+                CASE NO.: 2020-DP-000113 · SECTION: Family Division
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4 text-xs border-t border-b border-black py-2.5">
+              <div>
+                <div><strong>TIFFANY RENEA GREENE</strong>, Petitioner / Mother</div>
+                <div className="my-0.5 italic">v.</div>
+                <div><strong>ERIC JOSHUA GREENE</strong>, Respondent / Father</div>
+              </div>
+              <div className="text-right text-[11px] font-mono-legal flex flex-col justify-center">
+                <div className="font-bold text-black">PETITIONER&apos;S MASTER EXHIBIT B</div>
+                <div>CHRONOLOGICAL INTER-AGENCY AUDIT LEDGER</div>
+                <div>FLA. STAT. § 90.902 &amp; FRE 902(1)/(2)</div>
+              </div>
+            </div>
+
+            <div className="mt-3 text-[11px] font-sans text-slate-800 leading-relaxed">
+              <strong>Official Manifest:</strong> Comprehensive certified chronological audit of {INCIDENT_RECORDS.length} legal records, law enforcement complaints, Florida DCF child welfare investigations, and administrative filings establishing maternal fitness and rebutting opposing allegations.
+            </div>
+          </div>
+
           {/* Master Table */}
-          <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900 shadow-xl">
+          <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900 shadow-xl court-exhibit-sheet">
             <div className="p-3 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between text-xs">
               <span className="font-mono-legal text-slate-400">
                 Displaying <strong className="text-amber-400">{filteredLedger.length}</strong> of {INCIDENT_RECORDS.length} Legal Records
@@ -541,6 +586,11 @@ ${docket.keyImpact}`;
                 </tbody>
               </table>
             </div>
+          </div>
+
+          {/* Court Print Watermark */}
+          <div className="print-only court-watermark">
+            AUTHENTICATED COURT RECORD · MASTER INTER-AGENCY INCIDENT LEDGER (EXHIBIT B) · PASCO COUNTY CASE NO. 2020-DP-000113 · FRE 902 CERTIFIED
           </div>
         </div>
       )}
